@@ -16,7 +16,7 @@
         },
         "sqlAdministratorLogin": {
             "type": "String",
-            "metadata": {
+             "metadata": {
                 "description": "Provide the user name for SQL login."
             }
         },
@@ -36,6 +36,10 @@
             "metadata": {
                 "description": "The uri to a key in your Key Vault to add a second layer of encryption on top of the default infrastructure encryption"
             }
+        },
+         "setSbdcRbacOnStorageAccount": {
+            "type": "bool",
+            "defaultValue": false
         }
     },
     "variables": {
@@ -59,7 +63,7 @@
             "properties": {
               "mode": "Incremental",
               "templateLink": {
-                "uri": "[uri(deployment().properties.templateLink.uri, '/Azure-Samples/Synapse/master/Manage/DeployWorkspace/storage/azuredeploy.json')]",
+                "uri": "[uri(deployment().properties.templateLink.uri, '/armtemplate/storageazuredeploy.json')]",
                 "contentVersion": "1.0.0.0"
               },
               "parameters":{
@@ -75,13 +79,14 @@
             "properties": {
               "mode": "Incremental",
               "templateLink": {
-                "uri": "[uri(deployment().properties.templateLink.uri, '/Azure-Samples/Synapse/master/Manage/DeployWorkspace/workspace/azuredeploy.json')]",
+                "uri": "[uri(deployment().properties.templateLink.uri, '/armtemplate/synapseazuredeploy.json')]",
                 "contentVersion": "1.0.0.0"
               },
               "parameters":{
                 "name":{"value": "[tolower(parameters('workspaceName'))]"},
                 "sqlAdministratorLogin":{"value": "[parameters('sqlAdministratorLogin')]"},
                 "sqlAdministratorPassword":{"value": "[parameters('sqlAdministratorPassword')]"},
+                "setSbdcRbacOnStorageAccount":{"value": "[parameters('setSbdcRbacOnStorageAccount')]"},
                 "defaultDataLakeStorageAccountName":{"value": "[variables('dataLakeStorageName')]"},
                 "defaultDataLakeStorageFilesystemName":{"value": "[tolower(parameters('workspaceName'))]"},
                 "tagValues":{"value": "[parameters('tagValues')]"},
